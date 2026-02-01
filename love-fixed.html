@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hey Sadia 😉</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+header {
+  position: absolute;
+  top: 30px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+.container {
+  text-align: center;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.5s ease;
+}
+
+h1 {
+  color: #fff;
+  font-size: 3rem;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+  margin-bottom: 50px;
+}
+
+/* Button Container - IMPORTANT for positioning */
+.button-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Buttons */
+button {
+  padding: 15px 40px;
+  font-size: 22px;
+  font-weight: bold;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  font-family: inherit;
+}
+
+/* YES BUTTON */
+#yes {
+  background: #ff3366;
+  color: white;
+  animation: pulse 2s infinite;
+  position: relative;
+  z-index: 3;
+}
+
+#yes:hover {
+  transform: scale(1.15) rotate(-2deg);
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    box-shadow: 0 5px 15px rgba(255,51,102,0.5);
+  }
+  50% { 
+    box-shadow: 0 5px 30px rgba(255,51,102,1),
+                0 0 40px rgba(255,51,102,0.5);
+  }
+}
+
+/* NO BUTTON - Fixed positioning */
+#no {
+  background: #666;
+  color: white;
+  position: fixed; /* Changed to fixed */
+  z-index: 2;
+  transition: all 0.15s ease-out;
+}
+
+#no:hover {
+  background: #555;
+}
+
+/* Letter Box */
+#letter {
+  position: fixed;
+  bottom: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 35px;
+  width: 85%;
+  max-width: 500px;
+  border-radius: 25px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  opacity: 0;
+  transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 100;
+}
+
+#letter.show {
+  bottom: 50%;
+  transform: translate(-50%, 50%);
+  opacity: 1;
+}
+
+/* Message text */
+#message {
+  white-space: pre-wrap;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #333;
+  min-height: 100px;
+  font-family: 'Georgia', serif;
+  margin-bottom: 20px;
+}
+
+/* Music controls */
+.music-note {
+  text-align: center;
+  margin-top: 15px;
+  padding: 10px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.play-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #ff3366;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.play-button:hover {
+  background: #ff1a4d;
+}
+
+/* Heart Animation */
+.heart {
+  position: fixed;
+  bottom: -50px;
+  font-size: 28px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes floatUp {
+  0% { 
+    transform: translateY(0) scale(1) rotate(0deg); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateY(-110vh) scale(1.5) rotate(360deg); 
+    opacity: 0; 
+  }
+}
+
+/* Popup message */
+.message {
+  position: fixed;
+  background: #ff3366;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 16px;
+  z-index: 50;
+  animation: popMessage 1.5s ease-out forwards;
+  box-shadow: 0 5px 20px rgba(255,51,102,0.5);
+  pointer-events: none;
+}
+
+@keyframes popMessage {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  10% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.8);
+  }
+}
+
+/* Confetti */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+  animation: confettiFall 3s linear forwards;
+  pointer-events: none;
+  z-index: 99;
+}
+
+@keyframes confettiFall {
+  0% {
+    opacity: 1;
+    transform: translateY(-10vh) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(720deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  header {
+    font-size: 2rem;
+    top: 20px;
+  }
+  
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+  }
+  
+  button {
+    font-size: 18px;
+    padding: 12px 30px;
+  }
+  
+  #letter {
+    padding: 25px;
+    width: 90%;
+  }
+  
+  #message {
+    font-size: 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>Hey Sadia 😉</header>
+
+<div class="container">
+  <h1>Do you love me? 💖</h1>
+  <div class="button-wrapper">
+    <button id="yes">YES 😘</button>
+    <button id="no">NO 🙃</button>
+  </div>
+</div>
+
+<div id="letter">
+  <div id="message"></div>
+  <div class="music-note">
+    🎵 <span id="music-status">Music will play automatically</span>
+    <br>
+    <button class="play-button" id="play-music-btn" style="display: none;">▶️ Play Music</button>
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const letter = document.getElementById("letter");
+const container = document.querySelector(".container");
+const msgBox = document.getElementById("message");
+const musicStatus = document.getElementById("music-status");
+const playMusicBtn = document.getElementById("play-music-btn");
+
+// Create audio element
+const music = new Audio("ChainaMeye.mp3");
+music.volume = 0.6;
+music.loop = true;
+
+// Set initial position for NO button (next to YES button)
+function setInitialNoPosition() {
+  const yesRect = yesBtn.getBoundingClientRect();
+  noBtn.style.left = (yesRect.right + 20) + "px";
+  noBtn.style.top = yesRect.top + "px";
+}
+
+// Call it after page loads
+window.addEventListener("load", setInitialNoPosition);
+window.addEventListener("resize", setInitialNoPosition);
+
+// Love letter text
+const textLines = [
+  "Hey Sadia 💕,\n\n",
+  "I made this just for you…\n\n",
+  "Every smile you give feels like sunshine breaking through the clouds.\n",
+  "Every moment with you feels like pure magic.\n",
+  "Every laugh we share makes my heart skip a beat.\n\n",
+  "Thanks for being the amazing person you are 💗.\n\n",
+  "— Yours truly 😘"
+].join("");
+
+// Playful messages
+const messages = [
+  "😆 You can't escape love!",
+  "💕 Nice try!",
+  "😏 Come on, you know the answer!",
+  "💖 Don't be shy!",
+  "😘 Just say yes already!",
+  "💝 You know you want to!",
+  "🥰 I'm waiting...",
+  "💗 Please? 🥺"
+];
+
+let messageIndex = 0;
+let noClickCount = 0;
+
+// Typing animation
+function typeText(text, i = 0) {
+  if (i < text.length) {
+    msgBox.innerHTML += text.charAt(i);
+    setTimeout(() => typeText(text, i + 1), 50);
+  }
+}
+
+// Show popup message
+function showMessage(text) {
+  const msg = document.createElement("div");
+  msg.className = "message";
+  msg.innerText = text || messages[messageIndex % messages.length];
+  messageIndex++;
+  
+  // Position randomly but within visible area
+  const maxX = window.innerWidth - 250;
+  const maxY = window.innerHeight - 100;
+  const minX = 50;
+  const minY = 50;
+  
+  msg.style.top = (Math.random() * (maxY - minY) + minY) + "px";
+  msg.style.left = (Math.random() * (maxX - minX) + minX) + "px";
+  
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 1500);
+}
+
+// NO button dodge - FIXED VERSION
+noBtn.addEventListener("mouseover", () => {
+  // Get current button position
+  const btnRect = noBtn.getBoundingClientRect();
+  const yesRect = yesBtn.getBoundingClientRect();
+  
+  // Calculate safe boundaries
+  const padding = 20;
+  const maxX = window.innerWidth - btnRect.width - padding;
+  const maxY = window.innerHeight - btnRect.height - padding;
+  
+  let x, y;
+  let attempts = 0;
+  
+  // Find a position that's not too close to YES button or current position
+  do {
+    x = Math.random() * maxX + padding;
+    y = Math.random() * maxY + padding;
+    attempts++;
+  } while (
+    attempts < 10 && (
+      // Not too close to YES button
+      (Math.abs(x - yesRect.left) < 200 && Math.abs(y - yesRect.top) < 150) ||
+      // Not too close to current position
+      (Math.abs(x - btnRect.left) < 100 && Math.abs(y - btnRect.top) < 100)
+    )
+  );
+  
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+  
+  noClickCount++;
+  
+  // Make YES button bigger as NO is avoided more
+  if (noClickCount > 2) {
+    const scale = 1 + (noClickCount - 2) * 0.08;
+    yesBtn.style.transform = `scale(${Math.min(scale, 1.4)})`;
+  }
+  
+  showMessage();
+});
+
+// Also move NO button on click attempt (for mobile)
+noBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  noBtn.dispatchEvent(new Event('mouseover'));
+});
+
+// Create confetti
+function createConfetti() {
+  const colors = ['#ff6b9d', '#c44569', '#f8b500', '#feca57', '#ff6348', '#ff4757'];
+  for (let i = 0; i < 100; i++) {
+    setTimeout(() => {
+      const confetti = document.createElement("div");
+      confetti.className = "confetti";
+      confetti.style.left = Math.random() * 100 + "vw";
+      confetti.style.top = Math.random() * 20 + "vh";
+      confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDelay = Math.random() * 0.5 + "s";
+      confetti.style.animationDuration = (Math.random() * 2 + 2) + "s";
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 5000);
+    }, i * 15);
+  }
+}
+
+// Play music with fallback
+function playMusic() {
+  music.play()
+    .then(() => {
+      musicStatus.textContent = "🎵 Music is playing...";
+      playMusicBtn.style.display = "none";
+    })
+    .catch((error) => {
+      console.log("Autoplay blocked:", error);
+      musicStatus.textContent = "Click below to play music 🎵";
+      playMusicBtn.style.display = "inline-block";
+    });
+}
+
+// Manual play button
+playMusicBtn.addEventListener("click", () => {
+  music.play()
+    .then(() => {
+      musicStatus.textContent = "🎵 Music is playing...";
+      playMusicBtn.style.display = "none";
+    })
+    .catch((error) => {
+      alert("Cannot play music. Please check if ChainaMeye.mp3 is in the same folder.");
+    });
+});
+
+// YES button click - ENHANCED
+yesBtn.addEventListener("click", () => {
+  // Hide main container
+  container.style.opacity = "0";
+  container.style.transform = "scale(0.8)";
+  
+  setTimeout(() => {
+    container.style.display = "none";
+    
+    // Show letter with animation
+    letter.classList.add("show");
+    
+    // Start typing
+    typeText(textLines);
+    
+    // Create confetti
+    createConfetti();
+    
+    // Try to play music
+    playMusic();
+  }, 500);
+});
+
+// Floating hearts
+function createHeart() {
+  const hearts = ["❤️", "💕", "💖", "💗", "💝", "💘"];
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+  heart.style.fontSize = (Math.random() * 12 + 20) + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 7000);
+}
+
+setInterval(createHeart, 400);
+
+// Debug: Check if music file exists
+music.addEventListener('error', () => {
+  console.error("Music file not found! Make sure 'ChainaMeye.mp3' is in the same folder as this HTML file.");
+  musicStatus.textContent = "⚠️ Music file not found";
+  playMusicBtn.style.display = "none";
+});
+
+music.addEventListener('canplay', () => {
+  console.log("Music file loaded successfully!");
+});
+
+</script>
+
+</body>
+</html>
