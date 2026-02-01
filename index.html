@@ -51,7 +51,6 @@ h1 {
   margin-bottom: 50px;
 }
 
-/* Button Container - IMPORTANT for positioning */
 .button-wrapper {
   position: relative;
   width: 100%;
@@ -62,7 +61,6 @@ h1 {
   gap: 20px;
 }
 
-/* Buttons */
 button {
   padding: 15px 40px;
   font-size: 22px;
@@ -75,7 +73,6 @@ button {
   font-family: inherit;
 }
 
-/* YES BUTTON */
 #yes {
   background: #ff3366;
   color: white;
@@ -98,11 +95,10 @@ button {
   }
 }
 
-/* NO BUTTON - Fixed positioning */
 #no {
   background: #666;
   color: white;
-  position: fixed; /* Changed to fixed */
+  position: fixed;
   z-index: 2;
   transition: all 0.15s ease-out;
 }
@@ -111,7 +107,6 @@ button {
   background: #555;
 }
 
-/* Letter Box */
 #letter {
   position: fixed;
   bottom: -100%;
@@ -134,7 +129,6 @@ button {
   opacity: 1;
 }
 
-/* Message text */
 #message {
   white-space: pre-wrap;
   font-size: 18px;
@@ -145,7 +139,6 @@ button {
   margin-bottom: 20px;
 }
 
-/* Music controls */
 .music-note {
   text-align: center;
   margin-top: 15px;
@@ -171,7 +164,6 @@ button {
   background: #ff1a4d;
 }
 
-/* Heart Animation */
 .heart {
   position: fixed;
   bottom: -50px;
@@ -193,7 +185,6 @@ button {
   }
 }
 
-/* Popup message */
 .message {
   position: fixed;
   background: #ff3366;
@@ -226,7 +217,6 @@ button {
   }
 }
 
-/* Confetti */
 .confetti {
   position: fixed;
   width: 10px;
@@ -248,7 +238,6 @@ button {
   }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   header {
     font-size: 2rem;
@@ -307,23 +296,19 @@ const msgBox = document.getElementById("message");
 const musicStatus = document.getElementById("music-status");
 const playMusicBtn = document.getElementById("play-music-btn");
 
-// Create audio element
 const music = new Audio("ChainaMeye.mp3");
 music.volume = 0.6;
 music.loop = true;
 
-// Set initial position for NO button (next to YES button)
 function setInitialNoPosition() {
   const yesRect = yesBtn.getBoundingClientRect();
   noBtn.style.left = (yesRect.right + 20) + "px";
   noBtn.style.top = yesRect.top + "px";
 }
 
-// Call it after page loads
 window.addEventListener("load", setInitialNoPosition);
 window.addEventListener("resize", setInitialNoPosition);
 
-// Love letter text
 const textLines = [
   "Hey Sadia 💕,\n\n",
   "I made this just for you…\n\n",
@@ -334,7 +319,6 @@ const textLines = [
   "— Yours truly 😘"
 ].join("");
 
-// Playful messages
 const messages = [
   "😆 You can't escape love!",
   "💕 Nice try!",
@@ -349,7 +333,6 @@ const messages = [
 let messageIndex = 0;
 let noClickCount = 0;
 
-// Typing animation
 function typeText(text, i = 0) {
   if (i < text.length) {
     msgBox.innerHTML += text.charAt(i);
@@ -357,14 +340,12 @@ function typeText(text, i = 0) {
   }
 }
 
-// Show popup message
 function showMessage(text) {
   const msg = document.createElement("div");
   msg.className = "message";
   msg.innerText = text || messages[messageIndex % messages.length];
   messageIndex++;
   
-  // Position randomly but within visible area
   const maxX = window.innerWidth - 250;
   const maxY = window.innerHeight - 100;
   const minX = 50;
@@ -377,13 +358,10 @@ function showMessage(text) {
   setTimeout(() => msg.remove(), 1500);
 }
 
-// NO button dodge - FIXED VERSION
 noBtn.addEventListener("mouseover", () => {
-  // Get current button position
   const btnRect = noBtn.getBoundingClientRect();
   const yesRect = yesBtn.getBoundingClientRect();
   
-  // Calculate safe boundaries
   const padding = 20;
   const maxX = window.innerWidth - btnRect.width - padding;
   const maxY = window.innerHeight - btnRect.height - padding;
@@ -391,16 +369,13 @@ noBtn.addEventListener("mouseover", () => {
   let x, y;
   let attempts = 0;
   
-  // Find a position that's not too close to YES button or current position
   do {
     x = Math.random() * maxX + padding;
     y = Math.random() * maxY + padding;
     attempts++;
   } while (
     attempts < 10 && (
-      // Not too close to YES button
       (Math.abs(x - yesRect.left) < 200 && Math.abs(y - yesRect.top) < 150) ||
-      // Not too close to current position
       (Math.abs(x - btnRect.left) < 100 && Math.abs(y - btnRect.top) < 100)
     )
   );
@@ -410,7 +385,6 @@ noBtn.addEventListener("mouseover", () => {
   
   noClickCount++;
   
-  // Make YES button bigger as NO is avoided more
   if (noClickCount > 2) {
     const scale = 1 + (noClickCount - 2) * 0.08;
     yesBtn.style.transform = `scale(${Math.min(scale, 1.4)})`;
@@ -419,13 +393,11 @@ noBtn.addEventListener("mouseover", () => {
   showMessage();
 });
 
-// Also move NO button on click attempt (for mobile)
 noBtn.addEventListener("click", (e) => {
   e.preventDefault();
   noBtn.dispatchEvent(new Event('mouseover'));
 });
 
-// Create confetti
 function createConfetti() {
   const colors = ['#ff6b9d', '#c44569', '#f8b500', '#feca57', '#ff6348', '#ff4757'];
   for (let i = 0; i < 100; i++) {
@@ -443,7 +415,6 @@ function createConfetti() {
   }
 }
 
-// Play music with fallback
 function playMusic() {
   music.play()
     .then(() => {
@@ -457,7 +428,6 @@ function playMusic() {
     });
 }
 
-// Manual play button
 playMusicBtn.addEventListener("click", () => {
   music.play()
     .then(() => {
@@ -469,30 +439,19 @@ playMusicBtn.addEventListener("click", () => {
     });
 });
 
-// YES button click - ENHANCED
 yesBtn.addEventListener("click", () => {
-  // Hide main container
   container.style.opacity = "0";
   container.style.transform = "scale(0.8)";
   
   setTimeout(() => {
     container.style.display = "none";
-    
-    // Show letter with animation
     letter.classList.add("show");
-    
-    // Start typing
     typeText(textLines);
-    
-    // Create confetti
     createConfetti();
-    
-    // Try to play music
     playMusic();
   }, 500);
 });
 
-// Floating hearts
 function createHeart() {
   const hearts = ["❤️", "💕", "💖", "💗", "💝", "💘"];
   const heart = document.createElement("div");
@@ -507,7 +466,6 @@ function createHeart() {
 
 setInterval(createHeart, 400);
 
-// Debug: Check if music file exists
 music.addEventListener('error', () => {
   console.error("Music file not found! Make sure 'ChainaMeye.mp3' is in the same folder as this HTML file.");
   musicStatus.textContent = "⚠️ Music file not found";
